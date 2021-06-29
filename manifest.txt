@@ -1,2 +1,2 @@
 Main-Class: CGgui
-Class-Path: ../lib/jcommon-1.0.18.jar  ../lib/jfreechart-1.0.15.jar ../lib/fragments.jar ../lib/sequences.jar
+Class-Path: ../lib/jcommon-1.0.18.jar  ../lib/jfreechart-1.0.15.jar 
