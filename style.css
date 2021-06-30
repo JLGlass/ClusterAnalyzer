@@ -1,0 +1,17 @@
+.fileSel {
+    background-color: rgb(207, 207, 207);
+}
+
+.graphSel {
+    background-color: rgb(207, 207, 207);
+}
+
+#graph {
+    width: 800px;
+    height: 600px;
+    margin-left: 20px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: dimgrey;
+    background-color: white;
+}

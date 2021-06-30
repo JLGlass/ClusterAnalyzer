@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <title>Cluster Analyser</title>
+        <link href="style.css" type="text/css" rel="stylesheet">
+        <script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
+        <script src="script.js"></script>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>Cluster Analyser</h1>
+        <div class="fileSel">
+            <h3>Load File</h3>
+            <form action="action_page.php">
+                    <label for="fastaSel">Fasta file:</label>
+                    <input type="file" id="fastaSel" accept=".fasta, .fna, .ffn, .faa, .frn, .fa">
+                    <label for="bedSel">Bed file:</label>
+                    <input type="file" id="bedSel" accept=".bed">
+            </form>
+        </div>
+        <br>
+        <div class="graphSel">
+            <h3>Graph</h3>
+            <select class="graphTypeSel">
+                <option value=0 >Fragment Length</option>
+                <option value=1 >Minima</option>
+                <option value=2 >Optimization</option>
+            </select>
+            <br>
+            <br>
+            <div id="graph">
+            </div>
+            <br>
+        </div>
+    </body>
+</html>
