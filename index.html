@@ -2,9 +2,9 @@
 <html lang="en-us">
     <head>
         <title>Cluster Analyser</title>
-        <link href="style.css" type="text/css" rel="stylesheet">
+        <link href="css/style.css" type="text/css" rel="stylesheet">
         <script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
-        <script src="script.js"></script>
+        <script src="js/script.js"></script>
         <meta charset="UTF-8">
     </head>
     <body>
@@ -19,18 +19,52 @@
             </form>
         </div>
         <br>
-        <div class="graphSel">
+        <div class="graphWindow clearfix">
             <h3>Graph</h3>
-            <select class="graphTypeSel">
-                <option value=0 >Fragment Length</option>
-                <option value=1 >Minima</option>
-                <option value=2 >Optimization</option>
+            <select class="graphTypeSel" id="graphTypeSel" onchange="graphTypeChange()">
+                <option value=0>Fragment Length</option>
+                <option value=1>Minima</option>
+                <option value=2>Optimization</option>
             </select>
             <br>
-            <br>
-            <div id="graph">
+            <div class="graphWindow">
+                <h2 class="graphElement" id="graphTitle">Fragment Length Histogram</h2>
+                <div id="graph" class="graphElement" title="Fragment Length">
+                </div>
+                <br>
             </div>
-            <br>
+        </div>
+        <div class="searchSettings clearfix">
+            <h3>Search Settings</h3>
+            <form>
+                <input type="checkbox" id="caseSensSel">
+                <label for="caseSensSel">Case Sensitive</label>
+                <br>
+                <label for="searchPatternTxt">Search Pattern</label>
+                <input type="text" id="searchPatternTxt">
+                <br>
+                <label for="minimumTxt">Minimum</label>
+                <input type="text" id="minimumTxt">
+                <br>
+                <label for="maximumTxt">Maximum</label>
+                <input type="text" id="maximumTxt">
+                <br>
+                <label for="stepSizeTxt">Step Size</label>
+                <input type="text" id="stepSizeTxt">
+                <br>
+                <input type="checkbox" id="smoothingFactorSel">
+                <label for="smoothingFactorSel">Smoothing Factor</label>
+                <input type="text" id="smoothinFactorTxt">
+                <br>
+                <br>
+                <button id="searchSettingsApply">Apply</button>
+                <button id="searchSettingsReset">Reset</button>
+                <br>
+                <br>
+                <label for="graphedTxt">Graphed</label>
+                <input type="text" id="graphedTxt">
+                <button id="searchSettingsGo">Go</button>
+            </form>
         </div>
     </body>
 </html>

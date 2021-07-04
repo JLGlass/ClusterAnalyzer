@@ -2,7 +2,7 @@
     background-color: rgb(207, 207, 207);
 }
 
-.graphSel {
+.graphWindow {
     background-color: rgb(207, 207, 207);
 }
 
@@ -14,4 +14,23 @@
     border-width: 2px;
     border-color: dimgrey;
     background-color: white;
+}
+
+.graphWindow {
+    float: left;
+    background-color: rgb(207, 207, 207);
+}
+
+.graphElement {
+    text-align: center;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.searchSettings {
+    background-color: rgb(207, 207, 207);
 }
