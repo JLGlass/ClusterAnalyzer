@@ -24,7 +24,7 @@ def formatFile(dct_headers, lst_fileClean):
 
 def findEx(str_pattern, str_file):
     lst_regExPos = []
-    regEx = re.compile(str_pattern)
+    regEx = re.compile(str_pattern, re.IGNORECASE)
     for match in regEx.finditer(str_file):
         lst_regExPos.append(match.start())
     return lst_regExPos
@@ -40,13 +40,26 @@ def findFragments(int_fragmentRange, lst_regExPos):
         int_pos2 += 1
     return lst_fragmentSize
 
+def fragmentSize(lst_fragments, int_fragmentRange):
+    lst_fragmentSize = []
+    for i in range(len(lst_fragments)-int_fragmentRange):
+        lst_fragmentSize.append(lst_fragments[i+int_fragmentRange]-lst_fragments[i])
+    return lst_fragmentSize
+
 #Plotly
-def makePlot():
+def plotFragments():
     fig = go.Figure()
     for i in range(1000):
-        fig.add_trace(go.Box(x = (i,lst_fragments[i]), name = f"Fragment {i}", marker_color = "black"))
+        fig.add_trace(go.Box(x = (lst_fragments[i],lst_fragments[i+int_fragmentRange]), name = f"Fragment {i}", marker_color = "black"))
     fig.update_layout(title = f"Fragment Range: {int_fragmentRange}")
     fig.show()
+
+def plotFragmentSize():
+   fig = go.Figure()
+   for i in range(1000):
+       fig.add_trace(go.Histogram(histfunc = "count", x = lst_fragmentSize, name  = "count"))
+   fig.update_layout(title = "Fragment Size Frequency")
+   fig.show()
 
 #Open file
 filePath = "E:\Internship_MSK\chr21.fa"
@@ -63,10 +76,13 @@ dct_headers = findHeader(lst_fileClean)
 str_file = formatFile(dct_headers, lst_fileClean)
 lst_regExPos = findEx(str_pattern, str_file)
 lst_fragments = findFragments(int_fragmentRange, lst_regExPos)
+lst_fragmentSize = fragmentSize(lst_fragments, int_fragmentRange)
 
 print(f"The headers are located at lines: {dct_headers}")
 print(f"There are {len(lst_regExPos)} {str_pattern} positions.")
 print(f"The first 5 are {lst_regExPos[0:4]} and the last 5 are {lst_regExPos[len(lst_regExPos)-5:len(lst_regExPos)]}")
 print(f"The fragments are: {lst_fragments[0:100]}")
+print(f"The fragment sizes are: {lst_fragmentSize[0:100]}")
 
-makePlot()
+#plotFragments()
+plotFragmentSize()
