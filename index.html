@@ -9,7 +9,7 @@
     </head>
     <body>
         <h1>Cluster Analyser</h1>
-        <div class="fileSel">
+        <div class="fileSel window">
             <h3>Load File</h3>
             <form>
                     <label for="fastaSel">Fasta file:</label>
@@ -18,52 +18,111 @@
                     <input type="file" id="bedSel" accept=".bed">
             </form>
         </div>
-        <br>
-        <div class="graphWindow clearfix">
-            <h3>Graph</h3>
-            <select class="graphTypeSel" id="graphTypeSel" onchange="graphTypeChange()">
-                <option value=0>Fragment Length</option>
-                <option value=1>Minima</option>
-                <option value=2>Optimization</option>
-            </select>
-            <br>
-            <div class="graphWindow">
-                <h2 class="graphElement" id="graphTitle">Fragment Length Histogram</h2>
-                <iframe src="plot.html" id="graph" class="graphElement" title="Fragment Length"></iframe>
-                <br>
-            </div>
-        </div>
-        <div class="searchSettings clearfix">
-            <h3>Search Settings</h3>
-            <form>
-                <input type="checkbox" id="caseSensSel">
-                <label for="caseSensSel">Case Sensitive</label>
-                <br>
-                <label for="searchPatternTxt">Search Pattern</label>
-                <input type="text" id="searchPatternTxt">
-                <br>
-                <label for="minimumTxt">Minimum</label>
-                <input type="text" id="minimumTxt">
-                <br>
-                <label for="maximumTxt">Maximum</label>
-                <input type="text" id="maximumTxt">
-                <br>
-                <label for="stepSizeTxt">Step Size</label>
-                <input type="text" id="stepSizeTxt">
-                <br>
-                <input type="checkbox" id="smoothingFactorSel">
-                <label for="smoothingFactorSel">Smoothing Factor</label>
-                <input type="text" id="smoothinFactorTxt">
-                <br>
-                <br>
-                <button id="searchSettingsApply">Apply</button>
-                <button id="searchSettingsReset">Reset</button>
-                <br>
-                <br>
-                <label for="graphedTxt">Graphed</label>
-                <input type="text" id="graphedTxt">
-                <button id="searchSettingsGo">Go</button>
-            </form>
-        </div>
+        <table class="page">
+            <tr>
+                <td>
+                    <div class="graphWindow clearfix window">
+                        <h3>Graph</h3>
+                        <select class="graphTypeSel" id="graphTypeSel" onchange="graphTypeChange()">
+                            <option value=0>Fragment Length</option>
+                            <option value=1>Minima</option>
+                            <option value=2>Optimization</option>
+                        </select>
+                        <br>
+                        <div class="graphWindow">
+                            <h2 class="graphElement" id="graphTitle">Fragment Length Histogram</h2>
+                            <iframe src="plot.html" id="graph" class="graphElement" title="Fragment Length"></iframe>
+                            <br>
+                        </div>
+                    </div>
+                </td>
+                <td id="options">
+                    <div class="options clearfix">
+                        <div class="searchSettings window">
+                            <h3>Search Settings</h3>
+                            <table>
+                                <tr>
+                                    <td><input type="checkbox" id="caseSensitiveChkbx"></td>
+                                    <td>Case Sensitive</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Search Pattern</td>
+                                    <td><input type="text" id="searchPatternTxt" value="CG"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Minimum</td>
+                                    <td><input type="text" id="minimumTxt" value="15"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Maximum</td>
+                                    <td><input type="text" id="maximumTxt" value="60"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Step Size</td>
+                                    <td><input type="text" id="stepSizeTxt" value="5"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" id="smoothingFactorChkbx" checked></td>
+                                    <td>Smoothing Factor</td>
+                                    <td><input type="text" id="smoothingFactorTxt"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><button id="ApplyBtn">Apply</button></td>
+                                    <td><button id="ResetBtn" onclick="resetBtn()">Reset</button></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Graphed</td>
+                                    <td><input type="text" id="graphedTxt" value="30"></td>
+                                    <td><button id="GoBtn">Go</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="findMinimum window">
+                            <h3>Find Minimum</h3>
+                            <table>
+                                <tr>
+                                    <td>Lower Bound</td>
+                                    <td><input type="text" id="lowerBoundTxt"></td>
+                                    <td><button id="lowerBoundGrabBtn">Grab</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Upper Bound</td>
+                                    <td><input type="text" id="upperBoundTxt"></td>
+                                    <td><button id="upperBoundGrabBtn">Grab</button></td>
+                                </tr>
+                                <tr>
+                                    <td><button id="clearBtn" onclick="clearBtn()">Clear</button></td>
+                                    <td><button id="findBtn">Find</button><button id="findAllBtn">Find All</button></td>
+                                    <td><button id="cancelBtn">Cancel</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="setDomain window">
+                            <h3>Set Domain</h3>
+                            <table>
+                                <tr>
+                                    <td>Minimum</td>
+                                    <td><input type="text" id="domainMinimumTxt" value="1.7976931348623157E308"></td>
+                                </tr>
+                                <tr>
+                                    <td>Maximum</td>
+                                    <td><input type="text" id="domainMaximumTxt" value="0.0"></td>
+                                </tr>
+                                <tr>
+                                    <td><button id="setDomainBtn">Set Domain</button></td>
+                                    <td><button id="resetDomainBtn" onclick="resetDomainBtn()">Reset Domain</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </body>
 </html>

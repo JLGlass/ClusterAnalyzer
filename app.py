@@ -39,36 +39,26 @@ def findFragmentSize(int_fragmentRange, lst_regExPos):
         lst_fragmentSize.append(lst_regExPos[int_pos2]-lst_regExPos[int_pos1])
         int_pos1 += 1
         int_pos2 += 1
-    print(lst_fragmentSize)
-    for i in lst_fragmentSize:
-        if i > 8000:
-            lst_fragmentSize.remove(i)
+    lst_fragmentSize = [num for num in lst_fragmentSize if num < 7000]
     return lst_fragmentSize
 
 #Plotly
 def plotFragments():
     fig = go.Figure()
     for i in range(1000):
-        fig.add_trace(go.Box(
-            x = (lst_regExPos[i],lst_regExPos[i+int_fragmentRange]), name = f"Fragment {i}", marker_color = "black"))
+        fig.add_trace(go.Box(x = (lst_regExPos[i],lst_regExPos[i+int_fragmentRange]), name = f"Fragment {i}", marker_color = "black"))
     fig.update_layout(title = f"Fragment Range: {int_fragmentRange}")
     fig.show()
 
 def plotFragmentSize():
     fig = go.Figure()
-    fig.add_trace(go.Histogram(x = lst_fragmentSize, xbins=dict(size= 1), autobinx = False))
+    fig.add_trace(go.Histogram(x = lst_fragmentSize, xbins=dict(size= 1), autobinx = False, marker_color = "black"))
     fig.update_layout(title = "Fragment Length Histogram")
     fig.show()
     #fig.write_html(r"C:\Users\ethan\Documents\GitHub\ClusterAnalyzer\plot.html")
 
-def plotEx():
-    fig = go.Figure()
-    fig.add_trace(go.Histogram(x = lst_fragmentSize[:2000], xbins=dict(size= 1), autobinx = False))
-    fig.update_layout(title = "Test")
-    fig.show()
-
 #Open file
-filePath = r"C:\Users\ethan\Documents\chr21.fa"
+filePath = "E:\Internship_MSK\chr21.fa"
 file = open(filePath, "r")
 lst_file = file.readlines()
 
@@ -92,4 +82,3 @@ print(f"There are {len(lst_fragmentSize)} fragments.")
 
 #plotFragments()
 plotFragmentSize()
-#plotEx()
