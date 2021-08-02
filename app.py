@@ -1,5 +1,6 @@
 import re
 import plotly.graph_objects as go
+from collections import Counter
 
 def removeNewLine(lst_file):
     lst_fileClean = []
@@ -29,7 +30,7 @@ def findEx(str_pattern, str_file):
         lst_regExPos.append(match.start())
     return lst_regExPos
 
-def findFragments(int_fragmentRange, lst_regExPos):
+def findFragmentSize(int_fragmentRange, lst_regExPos):
     lst_fragmentSize = []
     int_pos1 = 0
     int_pos2 = int_pos1 + int_fragmentRange
@@ -38,31 +39,36 @@ def findFragments(int_fragmentRange, lst_regExPos):
         lst_fragmentSize.append(lst_regExPos[int_pos2]-lst_regExPos[int_pos1])
         int_pos1 += 1
         int_pos2 += 1
-    return lst_fragmentSize
-
-def fragmentSize(lst_fragments, int_fragmentRange):
-    lst_fragmentSize = []
-    for i in range(len(lst_fragments)-int_fragmentRange):
-        lst_fragmentSize.append(lst_fragments[i+int_fragmentRange]-lst_fragments[i])
+    print(lst_fragmentSize)
+    for i in lst_fragmentSize:
+        if i > 8000:
+            lst_fragmentSize.remove(i)
     return lst_fragmentSize
 
 #Plotly
 def plotFragments():
     fig = go.Figure()
     for i in range(1000):
-        fig.add_trace(go.Box(x = (lst_fragments[i],lst_fragments[i+int_fragmentRange]), name = f"Fragment {i}", marker_color = "black"))
+        fig.add_trace(go.Box(
+            x = (lst_regExPos[i],lst_regExPos[i+int_fragmentRange]), name = f"Fragment {i}", marker_color = "black"))
     fig.update_layout(title = f"Fragment Range: {int_fragmentRange}")
     fig.show()
 
 def plotFragmentSize():
-   fig = go.Figure()
-   for i in range(1000):
-       fig.add_trace(go.Histogram(histfunc = "count", x = lst_fragmentSize, name  = "count"))
-   fig.update_layout(title = "Fragment Size Frequency")
-   fig.show()
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(x = lst_fragmentSize, xbins=dict(size= 1), autobinx = False))
+    fig.update_layout(title = "Fragment Length Histogram")
+    fig.show()
+    #fig.write_html(r"C:\Users\ethan\Documents\GitHub\ClusterAnalyzer\plot.html")
+
+def plotEx():
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(x = lst_fragmentSize[:2000], xbins=dict(size= 1), autobinx = False))
+    fig.update_layout(title = "Test")
+    fig.show()
 
 #Open file
-filePath = "E:\Internship_MSK\chr21.fa"
+filePath = r"C:\Users\ethan\Documents\chr21.fa"
 file = open(filePath, "r")
 lst_file = file.readlines()
 
@@ -75,14 +81,15 @@ lst_fileClean = removeNewLine(lst_file)
 dct_headers = findHeader(lst_fileClean)
 str_file = formatFile(dct_headers, lst_fileClean)
 lst_regExPos = findEx(str_pattern, str_file)
-lst_fragments = findFragments(int_fragmentRange, lst_regExPos)
-lst_fragmentSize = fragmentSize(lst_fragments, int_fragmentRange)
+lst_fragmentSize = findFragmentSize(int_fragmentRange, lst_regExPos)
+dct_fragmentSizeFrequency = Counter(lst_fragmentSize)
 
 print(f"The headers are located at lines: {dct_headers}")
 print(f"There are {len(lst_regExPos)} {str_pattern} positions.")
 print(f"The first 5 are {lst_regExPos[0:4]} and the last 5 are {lst_regExPos[len(lst_regExPos)-5:len(lst_regExPos)]}")
-print(f"The fragments are: {lst_fragments[0:100]}")
-print(f"The fragment sizes are: {lst_fragmentSize[0:100]}")
+print(f"The first 5 fragment sizes are: {lst_fragmentSize[0:5]}")
+print(f"There are {len(lst_fragmentSize)} fragments.")
 
 #plotFragments()
 plotFragmentSize()
+#plotEx()
