@@ -6,6 +6,10 @@ body {
     background-color: rgb(207, 207, 207);
 }
 
+#fileStatus {
+    margin: 0;
+}
+
 .graphWindow {
     background-color: rgb(207, 207, 207);
 }
@@ -19,6 +23,12 @@ body {
     border-width: 2px;
     border-color: dimgrey;
     background-color: white;
+    display: none;
+}
+
+#chart {
+    width: 800px;
+    height: 600px;
 }
 
 .graphElement {
@@ -40,7 +50,7 @@ body {
     border-collapse: collapse;
  }
  
- .page td {
+ .tableFix td {
     padding: 0; 
     margin: 0;
  }
