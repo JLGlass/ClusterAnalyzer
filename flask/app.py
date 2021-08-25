@@ -56,8 +56,7 @@ def algorithm(fileName, searchOptions):
         lst_fragmentSize = [num for num in lst_fragmentSize if num < 7000]
         return lst_fragmentSize
 
-    filePath = folderPath + "/" + fileName
-    print(filePath)
+    filePath = os.path.join(UPLOAD_FOLDER, fileName)
     file = open(filePath, "r")
     lst_file = file.readlines()
 
@@ -91,7 +90,6 @@ def algorithm(fileName, searchOptions):
     return plotFragmentSize()
 
 #-----Define Variables-----#
-folderPath = "ClusterAnalyzer/flask/uploads"
 dct_defaultSearchOptions = {"caseSensitive": False,
                             "searchPattern": "CG",
                             "minimum": 15,
@@ -111,15 +109,16 @@ def parseSearchOptions(searchOptions):
 
 #-----Flask-----#
 app = Flask(__name__)
+UPLOAD_FOLDER = os.path.join(app.root_path, "uploads")
 app.config["UPLOAD_EXTENSIONS"] = [".fasta", ".fna", ".ffn", ".faa", ".frn", ".fa"]
-app.config["UPLOAD_PATH"] = folderPath
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 @app.route("/")
 def index():
-   return render_template("index.html", chartEmpty = "The graph for the uploaded Fasta file with be displayed here:")
+    return render_template("index.html", chartEmpty = "The graph for the uploaded Fasta file with be displayed here:")
 
 @app.route("/upload_file", methods = ["GET", "POST"])
-def upload_files():
+def upload_file():
     uploaded_file = request.files["file"]
     global filename
     filename = secure_filename(uploaded_file.filename)
@@ -127,9 +126,8 @@ def upload_files():
         file_ext = os.path.splitext(filename)[1]
         if file_ext not in app.config["UPLOAD_EXTENSIONS"]:
             abort(400)
-        uploaded_file.save(os.path.join(app.config["UPLOAD_PATH"], filename))
-    print(filename)
-    return render_template("index.html", file_status = "File uploaded", chartEmpty = "", JSONFragmentSize = algorithm(filename, dct_defaultSearchOptions))
+        uploaded_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        return render_template("index.html", file_status = "File uploaded", chartEmpty = "", JSONFragmentSize = algorithm(filename, dct_defaultSearchOptions))
 
 @app.route("/search_options/<string:searchOptions>", methods = ["POST"])
 def processSearchOptions(searchOptions):
@@ -147,7 +145,7 @@ loop = True
 
 while loop == True:
     now = time.time()
-    files = [os.path.join(folderPath, filename) for filename in os.listdir(folderPath)]
+    files = [os.path.join(UPLOAD_FOLDER, filename) for filename in os.listdir(UPLOAD_FOLDER)]
     for filename in files:
         if (now - os.stat(filename).st_mtime) > 1800:
             command = "rm {0}".format(filename)

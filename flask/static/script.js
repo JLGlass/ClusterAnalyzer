@@ -13,6 +13,10 @@ function graphTypeChange() {
     }
 }
 
+function slider() {
+    document.getElementById("sliderValue").innerHTML = document.getElementById("fragmentRangeSlider").value
+}
+
 function resetBtn() {
     document.getElementById("caseSensitiveChkbx").checked = false
     document.getElementById("searchPatternTxt").value = "CG"
